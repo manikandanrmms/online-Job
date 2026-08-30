@@ -1,17 +1,187 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Remote Job AI Agent</title><style>
-:root{--bg:#f4f6fb;--card:#fff;--ink:#172033;--muted:#697386;--line:#e5e8ef;--a:#6558e8;--g:#079669}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.side{background:#111827;color:#fff;padding:22px 14px}.brand{font-size:20px;font-weight:800;padding:8px 10px 24px}.brand b{color:#a78bfa}.nav button{width:100%;padding:12px;border:0;background:transparent;color:#cbd5e1;text-align:left;border-radius:9px;cursor:pointer;margin:2px 0}.nav button.active,.nav button:hover{background:#252d3e;color:#fff}.main{max-width:1450px;width:100%;padding:28px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--a);font-weight:800;text-transform:uppercase}.title{font-size:30px;font-weight:800;margin:5px 0}.sub{color:var(--muted);margin:0}.pill,.card,.stat{background:#fff;border:1px solid var(--line);border-radius:15px}.pill{padding:10px 13px;font-size:13px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{padding:17px}.n{font-size:27px;font-weight:800}.l,.small,.co{font-size:12px;color:var(--muted)}.section{margin-top:20px}.search{padding:15px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:9px}.input,select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px;background:#fff}.primary{border:0;background:var(--a);color:#fff;padding:11px 15px;border-radius:9px;font-weight:700;cursor:pointer}.jobs{padding:0 15px}.job{display:grid;grid-template-columns:1fr 80px 180px 150px 120px;gap:12px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}.jt{font-weight:800}.score{font-size:20px;color:var(--g);font-weight:800}.salary{font-size:12px;font-weight:700}.tag{display:inline-block;background:#f0efff;color:#5147c8;border-radius:99px;padding:4px 7px;font-size:10px;margin:5px 3px 0 0}.source{font-size:10px;color:var(--muted)}.empty{padding:35px;text-align:center;color:var(--muted)}.notice{padding:12px;background:#f3f1ff;border:1px solid #ddd8ff;color:#4b3ca8;border-radius:10px;font-size:12px;line-height:1.5}.panel{display:none}.panel.active{display:block}a{color:inherit;text-decoration:none}.apply{border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:8px}@media(max-width:900px){.app{grid-template-columns:1fr}.side{padding:10px}.nav{display:flex;overflow:auto}.nav button{width:auto;white-space:nowrap}.stats{grid-template-columns:1fr 1fr}.search{grid-template-columns:1fr 1fr}.job{grid-template-columns:1fr 80px}.job>*:nth-child(n+3){display:none}}@media(max-width:600px){.main{padding:15px}.stats{grid-template-columns:1fr}.search{grid-template-columns:1fr}}
-</style></head><body><div class="app"><aside class="side"><div class="brand">🤖 Remote Job <b>AI</b></div><div class="nav"><button class="active" onclick="show('dashboard',this)">▦ Dashboard</button><button onclick="show('matches',this)">★ AI Matches</button><button onclick="show('profile',this)">⚙ Profile</button></div></aside><main class="main">
-<section id="dashboard" class="panel active"><div class="top"><div><div class="eyebrow">Worldwide live job intelligence</div><div class="title">Remote Job AI Agent</div><p class="sub">Worldwide · Remote · ₹24L+ starting target</p></div><div class="pill">Product Owner / ERP</div></div><div class="stats"><div class="stat"><div class="l">Live jobs</div><div class="n" id="count">0</div></div><div class="stat"><div class="l">Strong matches</div><div class="n" id="strong">0</div></div><div class="stat"><div class="l">Salary-qualified</div><div class="n" id="salary">0</div></div><div class="stat"><div class="l">Sources</div><div class="n">2</div></div></div>
-<div class="section card search"><input id="q" class="input" value="Product Owner, ERP Product Owner, Product Manager, Infor LN" placeholder="Multiple roles/skills — separate with commas"><input id="min" class="input" type="number" min="0" step="100000" value="2400000" title="Minimum annual salary in INR"><select id="eu"><option value="false">Worldwide remote</option><option value="true">Europe only</option></select><button class="primary" onclick="search()">Search live jobs</button></div><div class="small" style="margin-top:7px">Minimum salary: ₹<span id="minLabel">24,00,000</span> per year. Change it any time. Multiple searches are separated by commas.</div><div id="msg"></div>
-<div class="section"><h2>Top AI matches</h2><div class="card"><div id="list" class="jobs"><div class="empty">Click Search live jobs.</div></div></div></div><div class="section notice">Worldwide remote search is enabled. Salary is normalized to INR for the filter. Jobs without a usable advertised salary are excluded in this version.</div></section>
-<section id="matches" class="panel"><div class="top"><div><div class="eyebrow">Candidate fit</div><div class="title">AI Matches</div><p class="sub">Transparent matching against your resume profile.</p></div></div><div class="card"><div id="mlist" class="jobs"><div class="empty">Run a search first.</div></div></div></section>
-<section id="profile" class="panel"><div class="top"><div><div class="eyebrow">Candidate</div><div class="title">My Profile</div><p class="sub">Configured from your resume.</p></div></div><div class="card" style="padding:18px;line-height:1.8"><b>Manikandan R</b><br>Product Owner — ERP Product Management, ERP, SaaS, Analytics<br><br><b>Target:</b> Worldwide · Remote · ₹24,00,000+ starting floor<br><b>Roles:</b> Product Owner, Product Manager, ERP Product Owner, ERP Product Manager, Business / Systems Analyst<br><b>Core:</b> Infor LN, ERP migration, Product Strategy, Roadmaps, Backlog, Agile/Scrum, SQL, Power BI, Tableau, Power Apps, Power Automate, Jira, Confluence</div></section>
-</main></div><script>
-function show(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
-function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function inr(x){return x==null?'—':'₹'+Number(x).toLocaleString('en-IN')}
-function money(j){let s=j.salary;if(!s)return 'Salary not disclosed';return `${inr(j.salaryINR)} · ${s.currency||''} ${s.min??''}${s.max!=null?'–'+s.max:''} / ${s.period||'year'}`}
-function render(js){let h=js.map(j=>`<div class="job"><div><div class="jt">${esc(j.title)}</div><div class="co">${esc(j.company)} · ${esc(j.location)}</div><div>${(j.matchedSkills||[]).slice(0,5).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></div><div><div class="score">${j.score}%</div><div class="small">match</div></div><div><div class="salary">${esc(money(j))}</div><div class="small">Above salary floor</div></div><div><div class="small">${esc((j.matchedRoles||[]).join(', ')||'Related role')}</div><div class="source">${esc(j.source)}</div></div><div><a class="apply" href="${esc(j.url)}" target="_blank" rel="noopener">View / Apply</a></div></div>`).join('')||'<div class="empty">No matching jobs found. Try broader search terms.</div>';document.getElementById('list').innerHTML=h;document.getElementById('mlist').innerHTML=h;document.getElementById('count').textContent=js.length;document.getElementById('strong').textContent=js.filter(x=>x.score>=80).length;document.getElementById('salary').textContent=js.length}
-min.addEventListener('input',()=>minLabel.textContent=Number(min.value||0).toLocaleString('en-IN'))
-async function search(){let terms=q.value, floor=Number(min.value||2400000), euOnly=eu.value;minLabel.textContent=floor.toLocaleString('en-IN');msg.textContent='Searching worldwide remote sources…';try{let u=`https://online-job.onrender.com/api/jobs?q=${encodeURIComponent(terms)}&europe_only=${euOnly}&min_salary_inr=${floor}&limit=50`;let r=await fetch(u);if(!r.ok)throw Error();let d=await r.json();render(d.jobs||[]);msg.textContent=d.errors?.length?d.errors.join(' | '):''}catch(e){msg.textContent='Backend unavailable. Please check the Render service.'}}
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Global Remote Job AI Agent — v3</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#172033;--muted:#687386;--line:#e2e7ef;--a:#5b50d8;--g:#07885e;--warn:#a65d00;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.side{background:#111827;color:#fff;padding:20px 14px}.brand{font-size:20px;font-weight:800;padding:8px 10px 22px}.brand b{color:#a78bfa}
+.nav button{width:100%;padding:12px;border:0;background:transparent;color:#cbd5e1;text-align:left;border-radius:9px;cursor:pointer;margin:2px 0}.nav button.active,.nav button:hover{background:#252d3e;color:#fff}
+.main{max-width:1600px;width:100%;padding:26px;margin:auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}
+.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--a);font-weight:800;text-transform:uppercase}.title{font-size:30px;font-weight:800;margin:5px 0}.sub{color:var(--muted);margin:0}
+.pill,.card,.stat,.sourcebox{background:#fff;border:1px solid var(--line);border-radius:15px}.pill{padding:10px 13px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.stat{padding:16px}.n{font-size:25px;font-weight:800}.l,.small,.co{font-size:12px;color:var(--muted)}
+.section{margin-top:18px}.filters{padding:15px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 110px;gap:9px}.filters2{padding:0 15px 15px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:9px}
+.input,select{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px;background:#fff}.primary{border:0;background:var(--a);color:#fff;padding:10px 15px;border-radius:9px;font-weight:700;cursor:pointer}.ghost{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:9px;cursor:pointer}
+.jobs{padding:0 15px}.job{display:grid;grid-template-columns:2.1fr .55fr 1.15fr 1.15fr 1fr 115px;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}
+.jt{font-weight:800}.score{font-size:19px;color:var(--g);font-weight:800}.salary{font-size:12px;font-weight:700}.tag,.badge{display:inline-block;background:#f0efff;color:#5147c8;border-radius:99px;padding:4px 7px;font-size:10px;margin:4px 3px 0 0}.badge{background:#edf8f4;color:#087653}.badge.warn{background:#fff4df;color:var(--warn)}.badge.gray{background:#eef1f5;color:#596273}
+.source{font-size:10px;color:var(--muted)}.empty{padding:35px;text-align:center;color:var(--muted)}.notice{padding:12px;background:#f3f1ff;border:1px solid #ddd8ff;color:#4b3ca8;border-radius:10px;font-size:12px;line-height:1.5}
+.panel{display:none}.panel.active{display:block}a{color:inherit;text-decoration:none}.apply{border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:8px;display:inline-block}.heart{border:0;background:transparent;font-size:20px;cursor:pointer}
+.pager{display:flex;justify-content:center;gap:8px;padding:16px}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:15px}.sourcebox{padding:14px}.sourcebox h3{margin:0 0 7px}.source-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.external{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:15px}.ext{border:1px solid var(--line);border-radius:12px;padding:14px}.ext h3{margin:0 0 6px}.ext p{font-size:12px;color:var(--muted);min-height:34px}.searchlink{border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:8px;cursor:pointer}
+.settings{padding:16px}.check{display:flex;gap:8px;align-items:center;font-size:13px;margin:8px 0}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}.filters,.filters2{grid-template-columns:1fr 1fr}.external,.sourcegrid{grid-template-columns:1fr 1fr}.job{grid-template-columns:1.8fr .55fr 1fr 1fr 110px}.job>*:nth-child(5){display:none}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{padding:10px}.nav{display:flex;overflow:auto}.nav button{width:auto;white-space:nowrap}.stats{grid-template-columns:1fr 1fr}.external,.sourcegrid{grid-template-columns:1fr}.job{grid-template-columns:1fr 70px}.job>*:nth-child(n+3){display:none}}
+@media(max-width:600px){.main{padding:14px}.stats,.filters,.filters2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="brand">🌍 Global <b>Remote Jobs</b></div>
+<div class="nav">
+<button class="active" onclick="show('dashboard',this)">▦ Job Search</button>
+<button onclick="show('saved',this)">♥ Saved Jobs</button>
+<button onclick="show('external',this)">↗ More Job Sites</button>
+<button onclick="show('sources',this)">◉ Sources</button>
+<button onclick="show('profile',this)">⚙ Profile</button>
+</div>
+</aside>
+
+<main class="main">
+<section id="dashboard" class="panel active">
+<div class="top">
+<div><div class="eyebrow">Global remote job intelligence</div><div class="title">Remote Job AI Agent <span class="badge">v3</span></div>
+<p class="sub">Worldwide/Anywhere first · global eligibility · salary normalization · deduplication</p></div>
+<div class="pill">Target: $50K+ USD / year</div>
+</div>
+
+<div class="stats">
+<div class="stat"><div class="l">Matching jobs</div><div class="n" id="count">0</div></div>
+<div class="stat"><div class="l">Strong matches</div><div class="n" id="strong">0</div></div>
+<div class="stat"><div class="l">Salary qualified</div><div class="n" id="salary">0</div></div>
+<div class="stat"><div class="l">Worldwide</div><div class="n" id="worldwide">0</div></div>
+<div class="stat"><div class="l">Live feeds</div><div class="n" id="sourcesCount">4</div></div>
+</div>
+
+<div class="section card">
+<div class="filters">
+<input id="q" class="input" value="Product Owner, ERP Product Owner, Product Manager, Infor LN" placeholder="Roles / skills">
+<select id="region"><option>Worldwide/Anywhere</option><option>North America</option><option>Europe</option><option>Asia-Pacific</option><option>Latin America</option><option>Africa</option><option>Middle East</option></select>
+<select id="country"><option value="">All countries</option></select>
+<select id="policy"><option value="Any">Any remote policy</option><option>Remote-First</option><option>Remote-Friendly</option><option>Remote-OK</option></select>
+<button class="primary" onclick="searchJobs(1)">Search</button>
+</div>
+<div class="filters2">
+<input id="min" class="input" type="number" min="0" step="1000" value="50000" title="Minimum annual USD">
+<input id="max" class="input" type="number" min="0" step="1000" placeholder="Maximum USD">
+<select id="salaryMode"><option value="paid">Salary disclosed</option><option value="all">Include salary unknown</option><option value="negotiable">Competitive / negotiable</option></select>
+<select id="sort"><option value="relevance">Relevance</option><option value="date">Posting date</option><option value="salary_desc">Salary high → low</option><option value="salary_asc">Salary low → high</option><option value="company">Company A → Z</option></select>
+<select id="perPage"><option value="25">25 / page</option><option value="50" selected>50 / page</option><option value="100">100 / page</option></select>
+<select id="freshness"><option value="0">Any posting date</option><option value="7">Last 7 days</option><option value="14">Last 14 days</option><option value="30">Last 30 days</option></select>
+</div>
+</div>
+<div id="msg"></div>
+
+<div class="section"><h2>Remote opportunities</h2>
+<div class="card"><div id="list" class="jobs"><div class="empty">Click Search to load live jobs.</div></div><div id="pager" class="pager"></div></div>
+</div>
+
+<div class="section notice">
+<strong>How this works:</strong> Aggregated feeds are normalized and deduplicated. Worldwide/Anywhere is the default, but location eligibility is inferred from available listing data and must be confirmed on the employer's application page. LinkedIn, Naukri and FlexJobs are offered as direct external searches rather than unauthorized scraping.
+</div>
+</section>
+
+<section id="saved" class="panel">
+<div class="top"><div><div class="eyebrow">Your shortlist</div><div class="title">Saved Jobs</div><p class="sub">Saved locally in this browser.</p></div></div>
+<div class="card"><div id="savedList" class="jobs"></div></div>
+</section>
+
+<section id="external" class="panel">
+<div class="top"><div><div class="eyebrow">Additional job platforms</div><div class="title">Search More Job Sites</div><p class="sub">Open the original platform with your current role/location search.</p></div></div>
+<div class="card"><div id="externalGrid" class="external"></div></div>
+<div class="section notice">These external searches do not copy or scrape listings into the aggregator. This avoids relying on unsupported private APIs or automated extraction from platforms that restrict it.</div>
+</section>
+
+<section id="sources" class="panel">
+<div class="top"><div><div class="eyebrow">Data quality</div><div class="title">Sources & Verification</div><p class="sub">Enabled feeds are separated from external-search platforms.</p></div></div>
+<div class="card"><div id="sourceGrid" class="sourcegrid"></div></div>
+</section>
+
+<section id="profile" class="panel">
+<div class="top"><div><div class="eyebrow">Candidate profile</div><div class="title">My Profile</div><p class="sub">Optimized for international Product / ERP remote roles.</p></div></div>
+<div class="card settings">
+<b>Target roles</b><p>Product Owner · Product Manager · ERP Product Owner · ERP Product Manager · Business / Systems Analyst · Digital Transformation</p>
+<b>Core skills</b><p>Infor LN · ERP · Product Strategy · Roadmaps · Backlog · Agile/Scrum · SQL · Power BI · Tableau · Power Apps · Power Automate · Jira · Confluence · SaaS</p>
+<b>Preferred search</b><p>Worldwide/Anywhere · Remote-First/Remote-Friendly · $50,000+ USD annual</p>
+<label class="check"><input id="remember" type="checkbox" checked> Remember search settings in this browser</label>
+</div>
+</section>
+</main></div>
+
+<script>
+const API='https://online-job.onrender.com/api';
+let current=[],page=1,lastQuery={};
+const SAVED_KEY='globalRemoteSavedJobsV3';
+const SETTINGS_KEY='globalRemoteSettingsV3';
+
+const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const usd=x=>x==null?'—':'$'+Number(x).toLocaleString('en-US',{maximumFractionDigits:0});
+const saved=()=>JSON.parse(localStorage.getItem(SAVED_KEY)||'[]');
+const setSaved=x=>localStorage.setItem(SAVED_KEY,JSON.stringify(x));
+function isSaved(j){return saved().some(x=>x.id===j.id)}
+function show(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(id==='saved')renderSaved();if(id==='external')renderExternal();if(id==='sources')loadSources();}
+function money(j){if(j.salaryMinUSD==null&&j.salaryMaxUSD==null)return 'Salary not disclosed';return `${usd(j.salaryMinUSD)}${j.salaryMaxUSD!=null?' – '+usd(j.salaryMaxUSD):'+'} USD / year`;}
+function toggleSave(id){let a=saved(),j=current.find(x=>x.id===id)||a.find(x=>x.id===id);if(!j)return;if(isSaved(j))a=a.filter(x=>x.id!==id);else a.unshift(j);setSaved(a);render(current);renderSaved();}
+function card(j){
+ const lock=j.remoteType==='Worldwide'?'Worldwide':j.remoteType==='Region-locked'?'Region-locked':'Remote';
+ const badge=lock==='Worldwide'?'badge':'badge warn';
+ const tz=j.timezoneRestrictions?.length?`TZ: ${j.timezoneRestrictions.slice(0,2).join(', ')}`:'';
+ return `<div class="job">
+ <div><div class="jt">${esc(j.title)}</div><div class="co">${esc(j.company)} · ${esc(j.location||j.remoteScope)}</div>${(j.matchedSkills||[]).slice(0,5).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>
+ <div><div class="score">${j.score||0}%</div><div class="small">match</div></div>
+ <div><div class="salary">${esc(money(j))}</div><div class="small">${j.compensationNotes?.length?'TC: '+esc(j.compensationNotes.join(', ')):'Total comp not stated'}</div></div>
+ <div><span class="${badge}">${esc(lock)}</span><div class="small">${esc(j.remoteScope||'')}</div><div class="small">${esc(j.companyRemotePolicy||'Unknown')}</div></div>
+ <div><div class="small">${j.posted?new Date(j.posted).toLocaleDateString():''} ${esc(tz)}</div><div class="source">${esc(j.source)}</div></div>
+ <div><button class="heart" title="Save">${isSaved(j)?'♥':'♡'}</button> <a class="apply" href="${esc(j.url)}" target="_blank" rel="noopener">Apply</a></div>
+ </div>`.replace('<button class="heart" title="Save">','<button class="heart" title="Save" onclick="toggleSave(\''+esc(j.id)+'\')">');
+}
+function render(js){current=js;document.getElementById('list').innerHTML=js.map(card).join('')||'<div class="empty">No matching jobs. Try broader terms or lower the salary floor.</div>';document.getElementById('count').textContent=js.length;document.getElementById('strong').textContent=js.filter(x=>x.score>=80).length;document.getElementById('salary').textContent=js.filter(x=>x.salaryMaxUSD!=null).length;document.getElementById('worldwide').textContent=js.filter(x=>x.remoteType==='Worldwide').length;}
+function renderSaved(){const a=saved();document.getElementById('savedList').innerHTML=a.map(card).join('')||'<div class="empty">No saved jobs yet.</div>';}
+function pager(d){const p=document.getElementById('pager');if(!d.pages||d.pages<=1){p.innerHTML='';return}p.innerHTML=`<button class="ghost" ${d.page<=1?'disabled':''} onclick="searchJobs(${d.page-1})">Previous</button><span style="padding:9px">Page ${d.page} / ${d.pages}</span><button class="ghost" ${d.page>=d.pages?'disabled':''} onclick="searchJobs(${d.page+1})">Next</button>`;}
+function saveSettings(){if(!remember.checked)return;localStorage.setItem(SETTINGS_KEY,JSON.stringify({q:q.value,region:region.value,country:country.value,min:min.value,max:max.value,salaryMode:salaryMode.value,policy:policy.value,sort:sort.value,perPage:perPage.value,freshness:freshness.value}));}
+function restoreSettings(){try{const s=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'null');if(!s)return;for(const k of ['q','region','country','min','max','salaryMode','policy','sort','perPage','freshness'])if(s[k]!=null&&document.getElementById(k))document.getElementById(k).value=s[k];}catch(e){}}
+async function searchJobs(p=1){
+ page=p;saveSettings();
+ const params=new URLSearchParams({q:q.value,region:region.value,country:country.value,min_salary_usd:min.value||50000,salary_mode:salaryMode.value,remote_policy:policy.value,sort:sort.value,page:p,per_page:perPage.value});
+ if(max.value)params.set('max_salary_usd',max.value);
+ msg.innerHTML='<div class="notice">Searching live remote feeds…</div>';
+ try{const r=await fetch(API+'/jobs?'+params);if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();let js=d.jobs||[];
+ if(Number(freshness.value)>0){const cut=Date.now()-Number(freshness.value)*86400000;js=js.filter(x=>x.posted&&new Date(x.posted).getTime()>=cut);}
+ render(js);pager(d);sourcesCount.textContent=(d.sources||[]).length;
+ msg.innerHTML=d.errors?.length?'<div class="notice">Some sources were unavailable: '+esc(d.errors.join(' · '))+'</div>':'';
+ }catch(e){msg.innerHTML='<div class="notice">Backend unavailable. Check the Render service.</div>';render([]);}
+}
+function externalUrl(name){
+ const qv=encodeURIComponent(q.value.replace(/,/g,' ')),rv=encodeURIComponent(region.value),cv=encodeURIComponent(country.value);
+ const urls={
+ 'LinkedIn':`https://www.linkedin.com/jobs/search/?keywords=${qv}&f_WT=2`,
+ 'Naukri':`https://www.naukri.com/${q.value.split(',')[0].trim().toLowerCase().replace(/[^a-z0-9]+/g,'-')}-jobs?k=${qv}&wfh=true`,
+ 'FlexJobs':`https://www.flexjobs.com/search?search=${qv}`,
+ 'Wellfound':`https://wellfound.com/jobs?query=${qv}&remote=true`,
+ 'Remote.co':`https://remote.co/remote-jobs/search/?search_keywords=${qv}`,
+ 'Indeed':`https://www.indeed.com/jobs?q=${qv}&sc=0kf%3Aattr%28DSQF7%29%3B`,
+ 'Glassdoor':`https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${qv}&remoteWorkType=remote`,
+ 'Working Nomads':`https://www.workingnomads.com/remote-jobs?search=${qv}`
+ };return urls[name]||'#';
+}
+function renderExternal(){
+ const names=[
+ ['LinkedIn','Large professional network · direct remote search','Search remote jobs'],
+ ['Naukri','Strong India market coverage · work-from-home search','Search remote jobs'],
+ ['FlexJobs','Remote-focused platform · membership may apply','Search FlexJobs'],
+ ['Wellfound','Startup and technology roles · remote search','Search startups'],
+ ['Remote.co','Remote-focused job listings','Search Remote.co'],
+ ['Indeed','Large global job board · remote search','Search Indeed'],
+ ['Glassdoor','Jobs plus company/review information','Search Glassdoor'],
+ ['Working Nomads','Remote-focused international listings','Search Working Nomads']
+ ];
+ externalGrid.innerHTML=names.map(([n,d,b])=>`<div class="ext"><h3>${esc(n)}</h3><p>${esc(d)}</p><button class="searchlink" onclick="window.open('${externalUrl(n)}','_blank','noopener')">${esc(b)} ↗</button></div>`).join('');
+}
+async function loadSources(){try{const d=await(await fetch(API+'/sources')).json();sourceGrid.innerHTML=d.sources.map(s=>`<div class="sourcebox"><h3>${esc(s.name)} ${s.enabled?'<span class="badge">Aggregated</span>':'<span class="badge gray">External / not aggregated</span>'}</h3><div class="small">${esc(s.type)} · verified ${esc(s.verified)}</div><p class="small">${esc(s.freeApply)}</p><p class="small">${esc(s.notes)}</p>${s.url?`<a class="apply" href="${esc(s.url)}" target="_blank">Source ↗</a>`:''}</div>`).join('');}catch(e){sourceGrid.innerHTML='<div class="empty">Source registry unavailable.</div>';}}
+function loadCountries(){const list=['United States','Canada','Mexico','United Kingdom','Germany','France','Ireland','Spain','Italy','Netherlands','Sweden','Switzerland','Poland','Portugal','Denmark','Norway','Finland','Belgium','Austria','India','Singapore','Australia','New Zealand','Japan','Philippines','South Korea','Hong Kong','Thailand','Vietnam','Indonesia','Brazil','Argentina','Chile','Colombia','Costa Rica','Peru','South Africa','Nigeria','Kenya','Egypt','Morocco','Ghana','Israel','United Arab Emirates','Saudi Arabia','Qatar','Jordan','Turkey'];country.innerHTML='<option value="">All countries</option>'+list.map(x=>`<option>${esc(x)}</option>`).join('');}
+loadCountries();restoreSettings();renderExternal();
+</script>
+</body></html>
